@@ -1,71 +1,20 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
-const cors = require('cors');
+const mongoose = require('mongoose');
 
 const PORT = process.env.PORT || 5000;
 
+//express app
 const app = express();
+
+//conect to mongodb
+const dbURI = 'mongodb+srv://panda_developer:de51gner@panda.igjqr.mongodb.net/dr-food?retryWrites=true&w=majority';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+
 app.use(express.json());
 app.use(cors());
 
-const transport = {
-    host: 'smtp.gmail.com',
-    auth: {
-        user: 'pandamailingservice@gmail.com',
-        pass: 'de51gner'
-    }
-};
-
-const transporter = nodemailer.createTransport(transport);
-
-transporter.verify((err, suss) => {
-    if(err){
-        console.log(err)
-    }else{
-        console.log(suss + ' Server is ready to take messages')
-    }
+app.get('/foods', (req, res) => {
+    
 })
 
-// app.get('/msg', (req, res) => {
-//     var mail = {
-//         from: 'panda',
-//         to: 'ahumarezeifeanyi001@gmail.com',  //Change to email address that you want to receive messages on
-//         subject: 'Pool party request',
-//         text: 'Helo there wanna come to my pool?'
-//     }
-//     transporter.sendMail(mail, (err, data) => {
-//         if (err) {
-//           res.json({
-//             msg: 'fail'
-//           })
-//         } else {
-//           res.json({
-//             msg: 'success ' + data
-//           })
-//         }
-//     })
-// })
-
-app.post('/sendmessage', (req, res) => {
-    const data = (req.body);
-    var mail = {
-        from: data.name,
-        subject: data.title,
-        text: data.content,
-        to: data.emails
-    };
-    transporter.sendMail(mail, (err, data) => {
-        if (err) {
-          res.json({
-            msg: 'fail'
-          })
-        } else {
-          res.json({
-            msg: 'success ' + data
-          })
-        }
-    })
-})
-
-app.listen(PORT)
+app.listen(PORT);
