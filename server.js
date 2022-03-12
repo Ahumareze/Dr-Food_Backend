@@ -56,5 +56,28 @@ app.post('/selected_food', (req, res) => {
 });
 
 app.post('/order', (req, res) => {
-  res.send(req.body)
+  const order = new Order({
+    name: req.body.name,
+    phone: req.body.phone,
+    address: req.body.address,
+    date: req.body.date,
+    cart: req.body.cart
+  });
+  order.save()
+    .then(r => {
+      res.send(r)
+    })
+    .catch(e => {
+      res.send(e)
+    })
+})
+
+app.get('/orders', (req, res) => {
+  Order.find()
+    .then(r => {
+      res.send(r)
+    })
+    .catch(e => {
+      res.send(e)
+    })
 })
