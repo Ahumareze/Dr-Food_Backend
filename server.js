@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const Food = require('./models/foods');
+const Order = require('./models/orders');
 
 const PORT = process.env.PORT || 5000;
 
@@ -17,11 +18,12 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use(express.json());
 app.use(cors());
 
-app.get('/add_foods', (req, res) => {
+app.post('/add_foods', (req, res) => {
   const food = new Food({
-    name: 'Rice',
-    img: 'http://res.cloudinary.com/ahumareze/image/upload/v1638211548/a5wrllvag4a12vrwkqmm.png',
-    price: 300,
+    name: req.body.name,
+    img: req.body.img,
+    price: req.body.price,
+    description: req.body.description,
     quantity: 1
   })
   food.save()
@@ -41,4 +43,18 @@ app.get('/foods', (req, res) => {
     .catch(e => {
       res.send(e)
     })
+})
+
+app.post('/selected_food', (req, res) => {
+  Food.findById(req.body.id)
+    .then(r => {
+      res.send(r)
+    })
+    .catch(e => {
+      res.send(e)
+    })
+});
+
+app.post('/order', (req, res) => {
+  res.send(req.body)
 })

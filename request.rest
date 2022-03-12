@@ -10,4 +10,10 @@ Content-Type: application/json
 }
 
 ###
-GET https://pandamailingservice.herokuapp.com/msg
+POST http://localhost:5000/foods
+Content-Type: application/json
+
+{
+    "name": "titus",
+    "price": 300
+}
